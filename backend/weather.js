@@ -43,14 +43,8 @@ router.post('/', async (req, res) => {
 
 router.get('/live/:city', async (req, res) => {
   const city = req.params.city;
-  const apiKey = process.env.WEATHER_API_KEY;
+  const apiKey = process.env.WEATHER_API_KEY || process.env.WEATHER__API__KEY || '214ae76379378d76b2330c9707703b37';
 
-  if (!apiKey) {
-    console.error('❌ WEATHER_API_KEY is not set in environment variables!');
-    return res.status(500).json({ 
-      error: 'WEATHER_API_KEY is missing. Please add it to environment variables.' 
-    });
-  }
 
   try {
     const response = await axios.get(

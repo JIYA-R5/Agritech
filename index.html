@@ -704,12 +704,33 @@
 
   async function updateWeatherCard(city) {
     try {
-      const res = await fetch(`/api/weather/live/${city}`);
-      if (!res.ok) {
-        console.warn(`Weather API HTTP ${res.status} for ${city}`);
-        return;
+      let data = null;
+
+      // Try backend endpoint first if running on web server
+      if (window.location.protocol.startsWith('http')) {
+        try {
+          const res = await fetch(`/api/weather/live/${city}`);
+          if (res.ok) {
+            data = await res.json();
+          }
+        } catch (e) {
+          console.warn('Backend fetch failed, using direct OpenWeather API fallback', e);
+        }
       }
-      const data = await res.json();
+
+      // Direct fallback for local file:// protocol or backend API unavailability
+      if (!data || !data.main) {
+        try {
+          const directRes = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=214ae76379378d76b2330c9707703b37&units=metric`
+          );
+          if (directRes.ok) {
+            data = await directRes.json();
+          }
+        } catch (e) {
+          console.error('Direct weather fetch failed for', city, e);
+        }
+      }
 
       if (!data || !data.main || data.main.temp === undefined) {
         console.warn('Weather data invalid for', city, data);
