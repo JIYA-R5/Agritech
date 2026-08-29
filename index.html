@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriTrack — Farm to Market</title>
+<link href="farm.css" rel="stylesheet">
+<head>
+
+</body>
+</html>
+
+
+
+<div id="langWelcome" class="lang-welcome">
+  <div class="lang-welcome-box">
+    <div class="lang-welcome-icon">🌾🚜</div>
+    <div class="lang-welcome-app">AgriTrack</div>
+    <h1 class="lang-welcome-title" data-i18n="welcome_title">Welcome</h1>
+    <p class="lang-welcome-sub" data-i18n="welcome_sub">Apni bhasha chunein / Select your language</p>
+    <div class="lang-welcome-buttons">
+      <button class="lang-btn primary" onclick="selectLanguage('hi')">हिंदी (Hindi)</button>
+      <button class="lang-btn" onclick="selectLanguage('en')">English</button>
+    </div>
+  </div>
+</div>
+
+
+<button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()" aria-label="Open menu">☰</button>
+
+<div class="app">
+
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon">🚜</div>
+      <div>
+        <h1>AgriTrack</h1>
+        <div class="tag" data-i18n="brand_tag">Khet se Bazaar tak</div>
+      </div>
+    </div>
+
+    <div class="nav-list">
+    
+      <button class="nav-item active" data-section="dashboard" onclick="showSection('dashboard')">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label" data-i18n="nav_home">Home</span>
+      </button>
+      <button class="nav-item" data-section="tracking" onclick="showSection('tracking')">
+        <span class="nav-icon">🚚</span>
+        <span class="nav-label" data-i18n="nav_tracking">Truck Location</span>
+      </button>
+      <button class="nav-item" data-section="shipments" onclick="showSection('shipments')">
+        <span class="nav-icon">📦</span>
+        <span class="nav-label" data-i18n="nav_shipments">All Loads</span>
+      </button>
+      <button class="nav-item" data-section="alerts" onclick="showSection('alerts')">
+        <span class="nav-icon">🔔</span>
+        <span class="nav-label" data-i18n="nav_alerts">Warnings</span>
+      </button>
+      <button class="nav-item" data-section="weather" onclick="showSection('weather')">
+        <span class="nav-icon">☀️</span>
+        <span class="nav-label" data-i18n="nav_weather">Weather</span>
+      </button>
+      
+    </div>
+
+    <div class="sidebar-foot">
+      <div class="foot-avatar">RM</div>
+      <div>
+        <div class="foot-role" data-i18n="role_label">Truck Manager</div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <main class="content">
+
+    <!-- ================= HOME / DASHBOARD ================= -->
+    <section class="section-view show" id="dashboard">
+      <div class="section-head">
+        <h2 data-i18n="dash_greeting">Namaste 🙏</h2>
+        <p class="section-sub" data-i18n="dash_sub">Yeh hai aaj ka poora hisaab — ek nazar mein.</p>
+      </div>
+
+      <div class="quick-grid">
+        <div class="quick-card safe">
+          <div class="quick-icon">🚚</div>
+          <div class="quick-num">4</div>
+          <div class="quick-label" data-i18n="qc1">Trucks chal rahe hain</div>
+        </div>
+        <div class="quick-card danger">
+          <div class="quick-icon">⚠️</div>
+          <div class="quick-num">2</div>
+          <div class="quick-label" data-i18n="qc2">Warning — dhyan dein</div>
+        </div>
+        <div class="quick-card warn">
+          <div class="quick-icon">🌡️</div>
+          <div class="quick-num">1</div>
+          <div class="quick-label" data-i18n="qc3">Load bahut garam hai</div>
+        </div>
+        <div class="quick-card safe">
+          <div class="quick-icon">✅</div>
+          <div class="quick-num">18</div>
+          <div class="quick-label" data-i18n="qc4">Is hafte safal pahuncha</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3 data-i18n="attn_title">Abhi Dhyan Dein</h3>
+        <div class="mini-alert danger">
+          <span class="mini-icon">🍓</span>
+          <div>
+            <div class="mini-title" data-i18n="mini1_title">Strawberry ka load bahut garam ho raha hai</div>
+            <div class="mini-sub" data-i18n="mini1_sub">4 ghante mein kharab ho sakta hai — turant dekhein</div>
+          </div>
+        </div>
+        <div class="mini-alert warn">
+          <span class="mini-icon">🍅</span>
+          <div>
+            <div class="mini-title" data-i18n="mini2_title">Tomato truck raste mein late hai</div>
+            <div class="mini-sub" data-i18n="mini2_sub">Bazaar ko bata diya gaya hai</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= LIVE TRACKING ================= -->
+    <section class="section-view" id="tracking">
+      <div class="section-head">
+        <h2 data-i18n="tracking_title">Truck Kahan Hai</h2>
+        <p class="section-sub" data-i18n="tracking_sub">Har truck ka haal, seedhi bhasha mein.</p>
+      </div>
+
+      <div class="truck-card">
+        <div class="truck-top">
+          <div class="truck-crop"><span class="crop-emoji">🍅</span> <span data-i18n="crop_tomato">Tomato</span></div>
+          <span class="status-pill ontheway" data-i18n="status_ontheway">Raste Mein</span>
+        </div>
+        <div class="truck-meta"><span data-i18n="lbl_driver">Driver</span>: Suresh Yadav · <span data-i18n="lbl_truck">Truck</span>: MH 12 AB 4821</div>
+
+        <div class="route-line">
+          <div class="route-point">
+            <span class="dot start"></span>
+            <div>
+              <div class="route-place" data-i18n="t1_start">Nashik se chala</div>
+              <div class="route-time"><span data-i18n="lbl_time">Time</span>: <span data-i18n="t1_start_time">9:00 subah</span></div>
+            </div>
+          </div>
+          <div class="route-point">
+            <span class="dot end"></span>
+            <div>
+              <div class="route-place" data-i18n="t1_end">Mumbai pahunchega</div>
+              <div class="route-time"><span data-i18n="lbl_time">Time</span>: <span data-i18n="t1_end_time">2:00 dopahar tak</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="truck-info-grid">
+          <div class="info-box safe">
+            <div class="info-icon">❄️</div>
+            <div class="info-word" data-i18n="info_cold_ok">Thanda — Theek Hai</div>
+            <div class="info-num">8.2°C</div>
+          </div>
+          <div class="info-box">
+            <div class="info-icon">📍</div>
+            <div class="info-word" data-i18n="info_where">Abhi Kahan Hai</div>
+            <div class="info-num" data-i18n="t1_location">Igatpuri ke paas</div>
+          </div>
+        </div>
+
+        <button class="action" data-i18n="btn_send_update" onclick="sendUpdate()">Update Bhejein</button>
+      </div>
+
+      <div class="truck-card">
+        <div class="truck-top">
+          <div class="truck-crop"><span class="crop-emoji">🍓</span> <span data-i18n="crop_strawberry">Strawberry</span></div>
+          <span class="status-pill danger" data-i18n="status_danger">Khatra</span>
+        </div>
+        <div class="truck-meta"><span data-i18n="lbl_driver">Driver</span>: Manoj Kumar · <span data-i18n="lbl_truck">Truck</span>: MH 15 CD 3317</div>
+
+        <div class="route-line">
+          <div class="route-point">
+            <span class="dot start"></span>
+            <div>
+              <div class="route-place" data-i18n="t2_start">Mahabaleshwar se chala</div>
+              <div class="route-time"><span data-i18n="lbl_time">Time</span>: <span data-i18n="t2_start_time">7:30 subah</span></div>
+            </div>
+          </div>
+          <div class="route-point">
+            <span class="dot end"></span>
+            <div>
+              <div class="route-place" data-i18n="t2_end">Pune pahunchega</div>
+              <div class="route-time"><span data-i18n="lbl_time">Time</span>: <span data-i18n="t2_end_time">12:00 dopahar tak</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="truck-info-grid">
+          <div class="info-box danger">
+            <div class="info-icon">🔥</div>
+            <div class="info-word" data-i18n="info_hot_danger">Bahut Garam — Khatra</div>
+            <div class="info-num">18.4°C</div>
+          </div>
+          <div class="info-box">
+            <div class="info-icon">📍</div>
+            <div class="info-word" data-i18n="info_where">Abhi Kahan Hai</div>
+            <div class="info-num" data-i18n="t2_location">Satara ke paas</div>
+          </div>
+        </div>
+
+        <button class="action" data-i18n="btn_send_update" onclick="sendUpdate()">Update Bhejein</button>
+      </div>
+
+      <div class="truck-card">
+        <div class="truck-top">
+          <div class="truck-crop"><span class="crop-emoji">🥔</span> <span data-i18n="crop_potato">Potato</span></div>
+          <span class="status-pill ontheway" data-i18n="status_ontheway">Raste Mein</span>
+        </div>
+        <div class="truck-meta"><span data-i18n="lbl_driver">Driver</span>: Vijay Singh · <span data-i18n="lbl_truck">Truck</span>: MP 09 EF 7702</div>
+
+        <div class="route-line">
+          <div class="route-point">
+            <span class="dot start"></span>
+            <div>
+              <div class="route-place" data-i18n="t3_start">Indore se chala</div>
+              <div class="route-time"><span data-i18n="lbl_time">Time</span>: <span data-i18n="t3_start_time">6:00 subah</span></div>
+            </div>
+          </div>
+          <div class="route-point">
+            <span class="dot end"></span>
+            <div>
+              <div class="route-place" data-i18n="t3_end">Bhopal pahunchega</div>
+              <div class="route-time"><span data-i18n="lbl_time">Time</span>: <span data-i18n="t3_end_time">11:00 subah tak</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="truck-info-grid">
+          <div class="info-box safe">
+            <div class="info-icon">❄️</div>
+            <div class="info-word" data-i18n="info_cold_ok">Thanda — Theek Hai</div>
+            <div class="info-num">14.0°C</div>
+          </div>
+          <div class="info-box">
+            <div class="info-icon">📍</div>
+            <div class="info-word" data-i18n="info_where">Abhi Kahan Hai</div>
+            <div class="info-num" data-i18n="t3_location">Dewas ke paas</div>
+          </div>
+        </div>
+
+        <button class="action" data-i18n="btn_send_update" onclick="sendUpdate()">Update Bhejein</button>
+      </div>
+    </section>
+
+    <!-- ================= ALL SHIPMENTS ================= -->
+    <section class="section-view" id="shipments">
+      <div class="section-head">
+        <h2 data-i18n="shipments_title">Sabhi Loads</h2>
+        <p class="section-sub" data-i18n="shipments_sub">Aaj raste mein kya-kya hai.</p>
+      </div>
+
+      <div class="panel">
+        <div class="shipment-row">
+          <span class="ship-crop"><span class="crop-emoji">🍅</span> <span data-i18n="ship1">Tomato — Nashik se Mumbai</span></span>
+          <span class="status-pill warn" data-i18n="status_warn">Dhyan Dein</span>
+        </div>
+        <div class="shipment-row">
+          <span class="ship-crop"><span class="crop-emoji">🌿</span> <span data-i18n="ship2">Palak (Spinach) — Pune se Mumbai</span></span>
+          <span class="status-pill danger" data-i18n="status_danger">Khatra</span>
+        </div>
+        <div class="shipment-row">
+          <span class="ship-crop"><span class="crop-emoji">🍌</span> <span data-i18n="ship3">Kela (Banana) — Jalgaon se Nagpur</span></span>
+          <span class="status-pill safe" data-i18n="status_safe">Theek Hai</span>
+        </div>
+        <div class="shipment-row">
+          <span class="ship-crop"><span class="crop-emoji">🥔</span> <span data-i18n="ship4">Aloo (Potato) — Indore se Bhopal</span></span>
+          <span class="status-pill safe" data-i18n="status_safe">Theek Hai</span>
+        </div>
+        <div class="shipment-row">
+          <span class="ship-crop"><span class="crop-emoji">🥬</span> <span data-i18n="ship5">Patta Gobhi (Cabbage) — Nashik se Pune</span></span>
+          <span class="status-pill safe" data-i18n="status_safe">Theek Hai</span>
+        </div>
+        <div class="shipment-row">
+          <span class="ship-crop"><span class="crop-emoji">🧅</span> <span data-i18n="ship6">Pyaz (Onion) — Nashik se Pune</span></span>
+          <span class="status-pill safe" data-i18n="status_safe">Theek Hai</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ALERTS ================= -->
+    <section class="section-view" id="alerts">
+      <div class="section-head">
+        <h2 data-i18n="alerts_title">Warnings</h2>
+        <p class="section-sub" data-i18n="alerts_sub">Jo cheez turant dekhni hai.</p>
+      </div>
+
+      <div class="alert-card danger">
+        <div class="alert-top">
+          <span class="alert-icon">🔥</span>
+          <div>
+            <div class="alert-title" data-i18n="a1_title">Strawberry ka truck bahut garam ho gaya hai</div>
+            <div class="alert-time" data-i18n="a1_time">Aaj, 12:40 dopahar</div>
+          </div>
+        </div>
+        <p class="alert-body" data-i18n="a1_body">4 ghante mein kharab ho sakta hai. Truck ko turant thande jagah bhejein.</p>
+        <button class="action small" data-i18n="btn_resolved" onclick="this.closest('.alert-card').style.opacity=0.5">Theek Kar Diya</button>
+      </div>
+
+      <div class="alert-card warn">
+        <div class="alert-top">
+          <span class="alert-icon">🛣️</span>
+          <div>
+            <div class="alert-title" data-i18n="a2_title">Rasta band hai — Tomato truck ne dusra rasta liya</div>
+            <div class="alert-time" data-i18n="a2_time">Aaj, 12:40 dopahar</div>
+          </div>
+        </div>
+        <p class="alert-body" data-i18n="a2_body">47 minute zyada lagenge. Driver ko bata diya gaya hai, load thanda hai.</p>
+        <button class="action small secondary" data-i18n="btn_seen" onclick="this.closest('.alert-card').style.opacity=0.5">Dekh Liya</button>
+      </div>
+
+      <div class="alert-card warn">
+        <div class="alert-top">
+          <span class="alert-icon">⏱️</span>
+          <div>
+            <div class="alert-title" data-i18n="a3_title">Potato truck 3 ghante late hai</div>
+            <div class="alert-time" data-i18n="a3_time">Aaj, 12:40 dopahar</div>
+          </div>
+        </div>
+        <p class="alert-body" data-i18n="a3_body">Rasta banane ka kaam chal raha hai. Bazaar ko naya time bata diya gaya.</p>
+        <button class="action small secondary" data-i18n="btn_seen" onclick="this.closest('.alert-card').style.opacity=0.5">Dekh Liya</button>
+      </div>
+
+      <div class="alert-card safe">
+        <div class="alert-top">
+          <span class="alert-icon">✅</span>
+          <div>
+            <div class="alert-title" data-i18n="a4_title">Palak (Spinach) safal pahuncha diya gaya</div>
+            <div class="alert-time" data-i18n="a4_time">Aaj, 11:10 subah</div>
+          </div>
+        </div>
+        <p class="alert-body" data-i18n="a4_body">Sab kuch theek raha, kharabi nahi hui.</p>
+      </div>
+    </section>
+
+    <!-- ================= WEATHER ================= -->
+    <section class="section-view" id="weather">
+      <div class="section-head">
+        <h2 data-i18n="weather_title">Mausam</h2>
+        <p class="section-sub" data-i18n="weather_sub">Aaj fasal ke liye mausam kaisa hai.</p>
+      </div>
+
+      <div class="weather-grid">
+        <div class="weather-card danger">
+          <div class="weather-top">
+            <div class="weather-place">📍 Nashik</div>
+            <span class="status-pill danger" data-i18n="status_high_risk">Zyada Khatra</span>
+          </div>
+          <div class="weather-main">
+            <span class="weather-icon">☀️</span>
+            <span class="weather-temp">37°C</span>
+          </div>
+          <div class="weather-word" data-i18n="w1_word">Bahut Garam Din</div>
+          <div class="weather-sub-grid">
+            <div><span class="ws-icon">💧</span> <span data-i18n="lbl_humidity">Hawa mein Namee</span>: <span data-i18n="lvl_low">Kam</span></div>
+            <div><span class="ws-icon">🌱</span> <span data-i18n="lbl_soil">Mitti mein Panee</span>: <span data-i18n="lvl_low">Kam</span></div>
+          </div>
+        </div>
+
+        <div class="weather-card safe">
+          <div class="weather-top">
+            <div class="weather-place">📍 Pune</div>
+            <span class="status-pill safe" data-i18n="status_safe">Theek Hai</span>
+          </div>
+          <div class="weather-main">
+            <span class="weather-icon">🌦️</span>
+            <span class="weather-temp">26°C</span>
+          </div>
+          <div class="weather-word" data-i18n="w2_word">Halka Mausam</div>
+          <div class="weather-sub-grid">
+            <div><span class="ws-icon">💧</span> <span data-i18n="lbl_humidity">Hawa mein Namee</span>: <span data-i18n="lvl_ok">Theek</span></div>
+            <div><span class="ws-icon">🌱</span> <span data-i18n="lbl_soil">Mitti mein Panee</span>: <span data-i18n="lvl_ok">Theek</span></div>
+          </div>
+        </div>
+
+        <div class="weather-card warn">
+          <div class="weather-top">
+            <div class="weather-place">📍 Indore</div>
+            <span class="status-pill warn" data-i18n="status_warn">Dhyan Dein</span>
+          </div>
+          <div class="weather-main">
+            <span class="weather-icon">🌤️</span>
+            <span class="weather-temp">31°C</span>
+          </div>
+          <div class="weather-word" data-i18n="w3_word">Garam Ho Raha Hai</div>
+          <div class="weather-sub-grid">
+            <div><span class="ws-icon">💧</span> <span data-i18n="lbl_humidity">Hawa mein Namee</span>: <span data-i18n="lvl_low">Kam</span></div>
+            <div><span class="ws-icon">🌱</span> <span data-i18n="lbl_soil">Mitti mein Panee</span>: <span data-i18n="lvl_ok">Theek</span></div>
+          </div>
+        </div>
+
+        <div class="weather-card safe">
+          <div class="weather-top">
+            <div class="weather-place">📍 Mumbai</div>
+            <span class="status-pill safe" data-i18n="status_safe">Theek Hai</span>
+          </div>
+          <div class="weather-main">
+            <span class="weather-icon">🌧️</span>
+            <span class="weather-temp">24°C</span>
+          </div>
+          <div class="weather-word" data-i18n="w4_word">Halki Baarish</div>
+          <div class="weather-sub-grid">
+            <div><span class="ws-icon">💧</span> <span data-i18n="lbl_humidity">Hawa mein Namee</span>: <span data-i18n="lvl_high">Zyada</span></div>
+            <div><span class="ws-icon">🌱</span> <span data-i18n="lbl_soil">Mitti mein Panee</span>: <span data-i18n="lvl_high">Zyada</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+  </main>
+</div>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('.section-view').forEach(function(section) {
+      section.classList.remove('show');
+    });
+    document.getElementById(id).classList.add('show');
+
+    document.querySelectorAll('.nav-item').forEach(function(item) {
+      item.classList.toggle('active', item.dataset.section === id);
+    });
+
+    closeSidebarOnMobile();
+    window.scrollTo(0, 0);
+  }
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('show');
+  }
+
+  function closeSidebarOnMobile() {
+    if (window.innerWidth <= 860) {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('show');
+    }
+  }
+
+  function sendUpdate() {
+    alert(currentLang === 'hi' ? 'Update bhej diya gaya' : 'Update sent');
+  }
+
+  const translations = {
+    hi: {
+      welcome_title: "Swagat Hai",
+      welcome_sub: "Apni bhasha chunein",
+      brand_tag: "Khet se Bazaar tak",
+      role_label: "Truck Manager",
+      nav_home: "Home",
+      nav_tracking: "Truck Kahan Hai",
+      nav_shipments: "Sabhi Loads",
+      nav_alerts: "Chetavniyan",
+      nav_weather: "Mausam",
+      nav_impact: "Hamara Result",
+
+      dash_greeting: "Namaste 🙏",
+      dash_sub: "Yeh hai aaj ka poora hisaab — ek nazar mein.",
+      qc1: "Trucks chal rahe hain",
+      qc2: "Warning — dhyan dein",
+      qc3: "Load bahut garam hai",
+      qc4: "Is hafte safal pahuncha",
+      attn_title: "Abhi Dhyan Dein",
+      mini1_title: "Strawberry ka load bahut garam ho raha hai",
+      mini1_sub: "4 ghante mein kharab ho sakta hai — turant dekhein",
+      mini2_title: "Tomato truck raste mein late hai",
+      mini2_sub: "Bazaar ko bata diya gaya hai",
+
+      tracking_title: "Truck Kahan Hai",
+      tracking_sub: "Har truck ka haal, seedhi bhasha mein.",
+      lbl_driver: "Driver",
+      lbl_truck: "Truck",
+      lbl_time: "Time",
+      crop_tomato: "Tomato",
+      crop_strawberry: "Strawberry",
+      crop_potato: "Potato",
+      status_ontheway: "Raste Mein",
+      status_danger: "Khatra",
+      status_warn: "Dhyan Dein",
+      status_safe: "Theek Hai",
+      status_high_risk: "Zyada Khatra",
+      info_cold_ok: "Thanda — Theek Hai",
+      info_hot_danger: "Bahut Garam — Khatra",
+      info_where: "Abhi Kahan Hai",
+      btn_send_update: "Update Bhejein",
+      t1_start: "Nashik se chala",
+      t1_start_time: "9:00 subah",
+      t1_end: "Mumbai pahunchega",
+      t1_end_time: "2:00 dopahar tak",
+      t1_location: "Igatpuri ke paas",
+      t2_start: "Mahabaleshwar se chala",
+      t2_start_time: "7:30 subah",
+      t2_end: "Pune pahunchega",
+      t2_end_time: "12:00 dopahar tak",
+      t2_location: "Satara ke paas",
+      t3_start: "Indore se chala",
+      t3_start_time: "6:00 subah",
+      t3_end: "Bhopal pahunchega",
+      t3_end_time: "11:00 subah tak",
+      t3_location: "Dewas ke paas",
+
+      shipments_title: "Sabhi Loads",
+      shipments_sub: "Aaj raste mein kya-kya hai.",
+      ship1: "Tomato — Nashik se Mumbai",
+      ship2: "Palak (Spinach) — Pune se Mumbai",
+      ship3: "Kela (Banana) — Jalgaon se Nagpur",
+      ship4: "Aloo (Potato) — Indore se Bhopal",
+      ship5: "Patta Gobhi (Cabbage) — Nashik se Pune",
+      ship6: "Pyaz (Onion) — Nashik se Pune",
+
+      alerts_title: "Warnings",
+      alerts_sub: "Jo cheez turant dekhni hai.",
+      a1_title: "Strawberry ka truck bahut garam ho gaya hai",
+      a1_time: "Aaj, 12:40 dopahar",
+      a1_body: "4 ghante mein kharab ho sakta hai. Truck ko turant thande jagah bhejein.",
+      a2_title: "Rasta band hai — Tomato truck ne dusra rasta liya",
+      a2_time: "Aaj, 12:40 dopahar",
+      a2_body: "47 minute zyada lagenge. Driver ko bata diya gaya hai, load thanda hai.",
+      a3_title: "Potato truck 3 ghante late hai",
+      a3_time: "Aaj, 12:40 dopahar",
+      a3_body: "Rasta banane ka kaam chal raha hai. Bazaar ko naya time bata diya gaya.",
+      a4_title: "Palak (Spinach) safal pahuncha diya gaya",
+      a4_time: "Aaj, 11:10 subah",
+      a4_body: "Sab kuch theek raha, kharabi nahi hui.",
+      btn_resolved: "Theek Kar Diya",
+      btn_seen: "Dekh Liya",
+
+      weather_title: "Mausam",
+      weather_sub: "Aaj fasal ke liye mausam kaisa hai.",
+      w1_word: "Bahut Garam Din",
+      w2_word: "Halka Mausam",
+      w3_word: "Garam Ho Raha Hai",
+      w4_word: "Halki Baarish",
+      lbl_humidity: "Hawa mein Namee",
+      lbl_soil: "Mitti mein Panee",
+      lvl_low: "Kam",
+      lvl_ok: "Theek",
+      lvl_high: "Zyada",
+
+      impact_title: "Ab Tak Ka Result",
+      impact_sub: "Kitna anaaj aur sabzi bachi hai, kharab nahi hui.",
+      imp1: "Sabzi jo kharab hone se bach gayi",
+      imp2: "Jitna faayda hawa ko hua",
+      imp3: "Kisano ki madad hui",
+      imp4: "Truck samay par pahunche",
+      unit_tonne: "Tonne",
+      unit_trees: "Ped",
+      chart_title: "Har Mahine Behtar"
+    },
+    en: {
+      welcome_title: "Welcome",
+      welcome_sub: "Select your language",
+      brand_tag: "Farm to Market",
+      role_label: "Truck Manager",
+      nav_home: "Home",
+      nav_tracking: "Truck Location",
+      nav_shipments: "All Loads",
+      nav_alerts: "Warnings",
+      nav_weather: "Weather",
+      nav_impact: "Our Result",
+
+      dash_greeting: "Hello 🙏",
+      dash_sub: "Here's today's full summary, at a glance.",
+      qc1: "Trucks on the road",
+      qc2: "Warnings — needs attention",
+      qc3: "Load is overheating",
+      qc4: "Delivered successfully this week",
+      attn_title: "Needs Attention Now",
+      mini1_title: "Strawberry load is overheating",
+      mini1_sub: "May spoil within 4 hours — check immediately",
+      mini2_title: "Tomato truck is running late",
+      mini2_sub: "Market has been informed",
+
+      tracking_title: "Where's the Truck",
+      tracking_sub: "Every truck's status, in plain language.",
+      lbl_driver: "Driver",
+      lbl_truck: "Truck",
+      lbl_time: "Time",
+      crop_tomato: "Tomato",
+      crop_strawberry: "Strawberry",
+      crop_potato: "Potato",
+      status_ontheway: "On the Way",
+      status_danger: "At Risk",
+      status_warn: "Needs Attention",
+      status_safe: "OK",
+      status_high_risk: "High Risk",
+      info_cold_ok: "Cold — OK",
+      info_hot_danger: "Too Hot — Danger",
+      info_where: "Current Location",
+      btn_send_update: "Send Update",
+      t1_start: "Left Nashik",
+      t1_start_time: "9:00 AM",
+      t1_end: "Arriving in Mumbai",
+      t1_end_time: "By 2:00 PM",
+      t1_location: "Near Igatpuri",
+      t2_start: "Left Mahabaleshwar",
+      t2_start_time: "7:30 AM",
+      t2_end: "Arriving in Pune",
+      t2_end_time: "By 12:00 PM",
+      t2_location: "Near Satara",
+      t3_start: "Left Indore",
+      t3_start_time: "6:00 AM",
+      t3_end: "Arriving in Bhopal",
+      t3_end_time: "By 11:00 AM",
+      t3_location: "Near Dewas",
+
+      shipments_title: "All Loads",
+      shipments_sub: "What's on the road today.",
+      ship1: "Tomato — Nashik to Mumbai",
+      ship2: "Spinach — Pune to Mumbai",
+      ship3: "Banana — Jalgaon to Nagpur",
+      ship4: "Potato — Indore to Bhopal",
+      ship5: "Cabbage — Nashik to Pune",
+      ship6: "Onion — Nashik to Pune",
+
+      alerts_title: "Warnings",
+      alerts_sub: "Things that need your attention right away.",
+      a1_title: "Strawberry truck has overheated",
+      a1_time: "Today, 12:40 PM",
+      a1_body: "May spoil within 4 hours. Move the truck to a cold spot immediately.",
+      a2_title: "Road blocked — Tomato truck took another route",
+      a2_time: "Today, 12:40 PM",
+      a2_body: "Will take 47 minutes longer. Driver has been informed, load is still cold.",
+      a3_title: "Potato truck is 3 hours late",
+      a3_time: "Today, 12:40 PM",
+      a3_body: "Road repair work is underway. Market has been given the new time.",
+      a4_title: "Spinach delivered successfully",
+      a4_time: "Today, 11:10 AM",
+      a4_body: "Everything went fine, no spoilage.",
+      btn_resolved: "Resolved",
+      btn_seen: "Seen",
+
+      weather_title: "Weather",
+      weather_sub: "How the weather looks for crops today.",
+      w1_word: "Very Hot Day",
+      w2_word: "Mild Weather",
+      w3_word: "Warming Up",
+      w4_word: "Light Rain",
+      lbl_humidity: "Air Humidity",
+      lbl_soil: "Soil Moisture",
+      lvl_low: "Low",
+      lvl_ok: "Normal",
+      lvl_high: "High",
+
+      impact_title: "Results So Far",
+      impact_sub: "How much produce was saved from spoiling.",
+      imp1: "Produce saved from spoiling",
+      imp2: "Equivalent benefit to the air",
+      imp3: "Farmers helped",
+      imp4: "Trucks delivered on time",
+      unit_tonne: "Tonnes",
+      unit_trees: "Trees",
+      chart_title: "Improving Every Month"
+    }
+  };
+
+  let currentLang = "hi";
+
+  function applyLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach(function(el) {
+      const key = el.getAttribute("data-i18n");
+      if (translations[lang][key] !== undefined) {
+        el.textContent = translations[lang][key];
+      }
+    });
+    const btn = document.getElementById("langToggle");
+    if (btn) btn.textContent = lang === "hi" ? "EN" : "हि";
+  }
+
+  function toggleLanguage() {
+    applyLanguage(currentLang === "hi" ? "en" : "hi");
+  }
+
+  function selectLanguage(lang) {
+    applyLanguage(lang);
+    document.getElementById("langWelcome").classList.add("hide");
+    document.body.classList.remove("lang-locked");
+     history.pushState({ screen: "app" }, "", "");
+  }
+
+  // Apply default language immediately so text is consistent even before a
+  // choice is made on the welcome screen (welcome screen still blocks the UI).
+
+  window.addEventListener("popstate", function () {
+    document.getElementById("langWelcome").classList.remove("hide");
+    document.body.classList.add("lang-locked");
+  });
+  applyLanguage("hi");
+
+
+  async function updateWeatherCard(city) {
+    try {
+      const res = await fetch(`/api/weather/live/${city}`);
+      if (!res.ok) {
+        console.warn(`Weather API HTTP ${res.status} for ${city}`);
+        return;
+      }
+      const data = await res.json();
+
+      if (!data || !data.main || data.main.temp === undefined) {
+        console.warn('Weather data invalid for', city, data);
+        return;
+      }
+
+      const cards = document.querySelectorAll('.weather-card');
+      cards.forEach(card => {
+        const placeEl = card.querySelector('.weather-place');
+        if (placeEl && placeEl.textContent.includes(city)) {
+          // Temperature
+          const tempEl = card.querySelector('.weather-temp');
+          if (tempEl) tempEl.textContent = `${Math.round(data.main.temp)}°C`;
+
+          // Weather Icon & Condition Text
+          if (data.weather && data.weather.length > 0) {
+            const mainCond = data.weather[0].main;
+            const desc = data.weather[0].description;
+            
+            const iconEl = card.querySelector('.weather-icon');
+            if (iconEl) {
+              if (mainCond === 'Rain') iconEl.textContent = '🌧️';
+              else if (mainCond === 'Drizzle') iconEl.textContent = '🌦️';
+              else if (mainCond === 'Thunderstorm') iconEl.textContent = '⛈️';
+              else if (mainCond === 'Snow') iconEl.textContent = '❄️';
+              else if (mainCond === 'Clear') iconEl.textContent = '☀️';
+              else if (mainCond === 'Clouds') iconEl.textContent = '☁️';
+              else iconEl.textContent = '🌤️';
+            }
+
+            const wordEl = card.querySelector('.weather-word');
+            if (wordEl) {
+              wordEl.textContent = desc.charAt(0).toUpperCase() + desc.slice(1);
+            }
+          }
+
+          // Risk Pill and Card Theme
+          const pill = card.querySelector('.status-pill');
+          const temp = data.main.temp;
+          if (temp > 35) {
+            if (pill) pill.textContent = 'Zyada Khatra';
+            card.className = 'weather-card danger';
+          } else if (temp > 30) {
+            if (pill) pill.textContent = 'Dhyan Do';
+            card.className = 'weather-card warn';
+          } else {
+            if (pill) pill.textContent = 'Theek Hai';
+            card.className = 'weather-card safe';
+          }
+        }
+      });
+    } catch (err) {
+      console.error('Weather update failed for', city, err);
+    }
+  }
+
+  // Update weather cards on load
+  ['Nashik', 'Pune', 'Indore', 'Mumbai'].forEach(city => updateWeatherCard(city));
+</script>
+
+</body>
+</head>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "agritech",
+  "version": "1.0.0",
+  "description": "Added the AgriTrack dashboard - a supply chain monitor for perishable produce with live tracking, shipment list, spoilage alerts, and impact stats.",
+  "main": "load.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JIYA-R5/Agritech.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JIYA-R5/Agritech/issues"
+  },
+  "homepage": "https://github.com/JIYA-R5/Agritech#readme",
+  "dependencies": {
+    "axios": "^1.19.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongoose": "^9.9.3"
+  }
+}
