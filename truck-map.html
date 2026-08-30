@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriTrack — Live Truck Map Demo</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root{
+    --earth-900:#2b2417;
+    --earth-700:#4a3f2a;
+    --leaf-600:#4c7a3f;
+    --leaf-500:#67965a;
+    --wheat-100:#f6efdd;
+    --wheat-200:#ece1c4;
+    --danger:#c1502e;
+    --ok:#2f7a63;
+    --card-shadow: 0 6px 18px rgba(43,36,23,0.18);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--wheat-100);
+    color: var(--earth-900);
+  }
+  header{
+    background: linear-gradient(135deg, var(--leaf-600), var(--leaf-500));
+    color: var(--wheat-100);
+    padding: 18px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow: var(--card-shadow);
+    position:relative;
+    z-index:1000;
+  }
+  header h1{
+    margin:0;
+    font-size: 1.15rem;
+    letter-spacing:0.02em;
+  }
+  header span{
+    font-size:0.8rem;
+    opacity:0.9;
+  }
+  .wrap{
+    display:grid;
+    grid-template-columns: 300px 1fr;
+    gap: 14px;
+    padding: 14px;
+  }
+  #map{
+    height: 78vh;
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--wheat-200);
+  }
+  .panel{
+    background: white;
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: var(--card-shadow);
+    height: fit-content;
+  }
+  .panel h2{
+    font-size:0.95rem;
+    margin: 0 0 10px 0;
+    color: var(--earth-700);
+  }
+  .truck-card{
+    border: 1px solid var(--wheat-200);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    cursor:pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .truck-card:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .truck-card .name{
+    font-weight:600;
+    font-size:0.9rem;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .truck-card .route{
+    font-size:0.75rem;
+    color: var(--earth-700);
+    opacity:0.8;
+    margin-top:2px;
+  }
+  .badge{
+    display:inline-block;
+    font-size:0.68rem;
+    font-weight:600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-top:6px;
+  }
+  .badge.ok{ background: rgba(47,122,99,0.14); color: var(--ok); }
+  .badge.danger{ background: rgba(193,80,46,0.14); color: var(--danger); }
+  .temp{
+    font-size:0.8rem;
+    margin-top:4px;
+    font-weight:600;
+  }
+  .note{
+    font-size:0.72rem;
+    line-height:1.4;
+    color: var(--earth-700);
+    background: var(--wheat-200);
+    padding:10px;
+    border-radius:10px;
+    margin-top:12px;
+  }
+  .leaflet-popup-content{
+    font-family: inherit;
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🚚 AgriTrack — Live Truck Map (Demo)</h1>
+  <span>Simulated GPS · Leaflet + OpenStreetMap · No API key</span>
+</header>
+
+<div class="wrap">
+  <div class="panel">
+    <h2>Trucks Chal Rahe Hain</h2>
+    <div id="truck-list"></div>
+    <div class="note">
+      Yeh demo simulated coordinates use karta hai. Production mein driver ke phone ka GPS
+      (<code>navigator.geolocation</code>) ya truck mein laga IoT tracker har kuch second mein
+      real lat/long bhejega, jo isi tarah map par render hoga.
+    </div>
+  </div>
+  <div id="map"></div>
+</div>
+
+<script>
+// ---- Truck route data (matches AgriTrack loads) ----
+const trucks = [
+  {
+    id: 'tomato',
+    icon: '🍅',
+    name: 'Tomato — MH 12 AB 4821',
+    driver: 'Suresh Yadav',
+    route: 'Nashik → Mumbai',
+    from: [19.9975, 73.7898],
+    to: [19.0760, 72.8777],
+    temp: 8.2,
+    status: 'ok',
+    statusLabel: 'Thanda — Theek Hai'
+  },
+  {
+    id: 'strawberry',
+    icon: '🍓',
+    name: 'Strawberry — MH 15 CD 3317',
+    driver: 'Manoj Kumar',
+    route: 'Mahabaleshwar → Pune',
+    from: [17.9307, 73.6477],
+    to: [18.5204, 73.8567],
+    temp: 18.4,
+    status: 'danger',
+    statusLabel: 'Bahut Garam — Khatra'
+  },
+  {
+    id: 'potato',
+    icon: '🥔',
+    name: 'Potato — MP 09 EF 7702',
+    driver: 'Vijay Singh',
+    route: 'Indore → Bhopal',
+    from: [22.7196, 75.8577],
+    to: [23.2599, 77.4126],
+    temp: 14.0,
+    status: 'ok',
+    statusLabel: 'Thanda — Theek Hai'
+  }
+];
+
+// ---- Map setup ----
+const map = L.map('map', { zoomControl: true }).setView([20.5, 75.5], 6);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors',
+  maxZoom: 18
+}).addTo(map);
+
+function truckDivIcon(icon, status){
+  const ring = status === 'danger' ? '#c1502e' : '#2f7a63';
+  return L.divIcon({
+    className: '',
+    html: `<div style="
+        width:38px;height:38px;border-radius:50%;
+        background:white;border:3px solid ${ring};
+        display:flex;align-items:center;justify-content:center;
+        font-size:18px;box-shadow:0 3px 8px rgba(0,0,0,0.3);
+      ">${icon}</div>`,
+    iconSize: [38,38],
+    iconAnchor: [19,19]
+  });
+}
+
+function lerp(a, b, t){ return a + (b - a) * t; }
+
+const markers = {};
+const routeLines = {};
+const progress = {};
+
+trucks.forEach(t => {
+  progress[t.id] = Math.random() * 0.4; // stagger starting positions
+
+  routeLines[t.id] = L.polyline([t.from, t.to], {
+    color: t.status === 'danger' ? '#c1502e' : '#4c7a3f',
+    weight: 3,
+    opacity: 0.5,
+    dashArray: '6,8'
+  }).addTo(map);
+
+  L.circleMarker(t.from, { radius: 5, color:'#4a3f2a', fillOpacity:1 }).addTo(map)
+    .bindTooltip(t.route.split(' → ')[0], { permanent:false });
+  L.circleMarker(t.to, { radius: 5, color:'#4a3f2a', fillOpacity:1 }).addTo(map)
+    .bindTooltip(t.route.split(' → ')[1], { permanent:false });
+
+  const startPos = [lerp(t.from[0], t.to[0], progress[t.id]), lerp(t.from[1], t.to[1], progress[t.id])];
+  markers[t.id] = L.marker(startPos, { icon: truckDivIcon(t.icon, t.status) })
+    .addTo(map)
+    .bindPopup(`
+      <b>${t.icon} ${t.name}</b><br>
+      Driver: ${t.driver}<br>
+      Route: ${t.route}<br>
+      Temp: <b>${t.temp}°C</b> — ${t.statusLabel}
+    `);
+});
+
+// ---- Simulate live movement ----
+function animateTrucks(){
+  trucks.forEach(t => {
+    progress[t.id] += 0.0025 + Math.random() * 0.001;
+    if (progress[t.id] > 1) progress[t.id] = 0; // loop back for continuous demo
+
+    const p = progress[t.id];
+    const newPos = [lerp(t.from[0], t.to[0], p), lerp(t.from[1], t.to[1], p)];
+    markers[t.id].setLatLng(newPos);
+  });
+  requestAnimationFrame(animateTrucks);
+}
+requestAnimationFrame(animateTrucks);
+
+// ---- Side panel list ----
+const listEl = document.getElementById('truck-list');
+trucks.forEach(t => {
+  const card = document.createElement('div');
+  card.className = 'truck-card';
+  card.innerHTML = `
+    <div class="name">${t.icon} ${t.name}</div>
+    <div class="route">${t.route}</div>
+    <div class="temp">🌡️ ${t.temp}°C</div>
+    <span class="badge ${t.status}">${t.statusLabel}</span>
+  `;
+  card.onclick = () => {
+    map.flyTo(markers[t.id].getLatLng(), 9, { duration: 1 });
+    markers[t.id].openPopup();
+  };
+  listEl.appendChild(card);
+});
+</script>
+
+</body>
+</html>
